@@ -1,8 +1,8 @@
 version: "3.7"
 
 services:
-  db:
-    container_name: postgres
+  db_teastream:
+    container_name: postgres_teastream
     image: postgres:latest
     restart: always
     environment:
@@ -10,27 +10,27 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DATABASE=${POSTGRES_DATABASE}
     ports:
-      - 5433:5432
+      - 5434:5432 # Изменили внешний порт
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_teastream:/var/lib/postgresql/data
     networks:
-      - messenger
+      - teastream-backend
 
-  redis:
-    container_name: redis
+  redis_teastream:
+    container_name: redis_teastream
     image: redis:5.0
     restart: always
     ports:
-      - 6379:6379
+      - 6380:6379
     command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
-      - redis_data:/data
+      - redis_data_teastream:/data
     networks:
-      - messenger
+      - teastream-backend
 
 volumes:
-  postgres_data:
-  redis_data:
+  postgres_data_teastream:
+  redis_data_teastream:
 
 networks:
-  messenger:
+  teastream-backend:

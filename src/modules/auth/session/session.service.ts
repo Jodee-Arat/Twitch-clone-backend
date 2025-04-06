@@ -1,5 +1,6 @@
 import { PrismaService } from "@/src/core/prisma/prisma.service";
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -13,13 +14,16 @@ import { ConfigService } from "@nestjs/config";
 import { getSessionMetadata } from "@/src/shared/utils/session-metadata.util";
 import { RedisService } from "@/src/core/redis/redis.service";
 import session from "express-session";
+import { destroySession, saveSession } from "@/src/shared/utils/session.util";
+import { VerificationService } from "../verification/verification.service";
 
 @Injectable()
 export class SessionService {
   constructor(
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly verificationService: VerificationService
   ) {}
 
   async findByUser(req: Request) {
@@ -78,38 +82,21 @@ export class SessionService {
       throw new UnauthorizedException("Неверный пароль");
     }
 
+    if (!user.isEmailVerified) {
+      await this.verificationService.sendVerificationToken(user);
+
+      throw new BadRequestException(
+        "Аккаунт не верифицирован. Пожалуйста, проверьте свою почту для подтверждения"
+      );
+    }
+
     const metadata = getSessionMetadata(req, userAgent);
 
-    return new Promise((resolve, reject) => {
-      req.session.createdAt = new Date();
-      req.session.userId = user.id;
-      req.session.metadata = metadata;
-
-      req.session.save((err) => {
-        if (err) {
-          return reject(
-            new InternalServerErrorException("Не удалось сохранить сессию")
-          );
-        }
-        resolve(user);
-      });
-    });
+    return saveSession(req, user, metadata);
   }
 
   async logout(req: Request) {
-    return new Promise((resolve, reject) => {
-      req.session.destroy((err) => {
-        if (err) {
-          return reject(
-            new InternalServerErrorException("Не удалось завершить сессию")
-          );
-        }
-        req.res.clearCookie(
-          this.configService.getOrThrow<string>("SESSION_NAME")
-        );
-        resolve(true);
-      });
-    });
+    return destroySession(req, this.configService);
   }
   async clearSession(req: Request) {
     req.res.clearCookie(this.configService.getOrThrow<string>("SESSION_NAME"));
