@@ -127,6 +127,20 @@ exports.Prisma.UserScalarFieldEnum = {
   bio: 'bio',
   isVerified: 'isVerified',
   isEmailVerified: 'isEmailVerified',
+  isTotpEnabled: 'isTotpEnabled',
+  totpSecret: 'totpSecret',
+  isDeactivated: 'isDeactivated',
+  deactivatedAt: 'deactivatedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SocialLinkScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  url: 'url',
+  position: 'position',
+  userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -157,11 +171,13 @@ exports.Prisma.NullsOrder = {
 };
 exports.TokenType = exports.$Enums.TokenType = {
   EMAIL_VERIFY: 'EMAIL_VERIFY',
-  PASSWORD_RESET: 'PASSWORD_RESET'
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  DEACTIVATE_ACCOUNT: 'DEACTIVATE_ACCOUNT'
 };
 
 exports.Prisma.ModelName = {
   User: 'User',
+  SocialLink: 'SocialLink',
   Token: 'Token'
 };
 

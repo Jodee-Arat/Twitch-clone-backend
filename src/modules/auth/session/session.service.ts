@@ -3,7 +3,6 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -13,9 +12,9 @@ import { type Request } from "express";
 import { ConfigService } from "@nestjs/config";
 import { getSessionMetadata } from "@/src/shared/utils/session-metadata.util";
 import { RedisService } from "@/src/core/redis/redis.service";
-import session from "express-session";
 import { destroySession, saveSession } from "@/src/shared/utils/session.util";
 import { VerificationService } from "../verification/verification.service";
+import { TOTP } from "otpauth";
 
 @Injectable()
 export class SessionService {
@@ -67,12 +66,13 @@ export class SessionService {
   }
 
   async login(req: Request, input: LoginInput, userAgent: string) {
-    const { login, password } = input;
+    const { login, password, pin } = input;
     const user = await this.prismaService.user.findFirst({
       where: {
         OR: [{ username: { equals: login } }, { email: { equals: login } }],
       },
     });
+
     if (!user) {
       throw new NotFoundException("Пользователь не найден");
     }
@@ -90,9 +90,32 @@ export class SessionService {
       );
     }
 
-    const metadata = getSessionMetadata(req, userAgent);
+    if (user.isTotpEnabled) {
+      if (!pin) {
+        return {
+          message: "Необходим код для завершения авторизации",
+          user: null,
+        };
+      }
+      const totp = new TOTP({
+        issuer: "TeaStream",
+        label: `${user.email}`,
+        algorithm: "SHA1",
+        digits: 6,
+        secret: user.totpSecret,
+      });
 
-    return saveSession(req, user, metadata);
+      const delta = totp.validate({ token: pin });
+
+      if (delta === null) {
+        throw new BadRequestException("Неверный код");
+      }
+    }
+
+    const metadata = getSessionMetadata(req, userAgent);
+    const savedUser = await saveSession(req, user, metadata);
+
+    return { user: savedUser, message: null };
   }
 
   async logout(req: Request) {

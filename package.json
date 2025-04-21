@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",
+    "@aws-sdk/client-s3": "^3.787.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/apollo": "^13.0.4",
     "@nestjs/common": "^11.0.1",
@@ -31,6 +32,7 @@
     "@nestjs/graphql": "^13.0.4",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/schedule": "^5.0.1",
     "@prisma/client": "^6.5.0",
     "@react-email/components": "^0.0.36",
     "@react-email/html": "^0.0.11",
@@ -45,13 +47,18 @@
     "express-session": "^1.18.1",
     "geoip-lite": "^1.4.10",
     "graphql": "^16.10.0",
+    "graphql-upload": "^13.0.0",
+    "hi-base32": "^0.5.1",
     "i18n-iso-countries": "^7.14.0",
     "ioredis": "^5.6.0",
+    "otpauth": "^9.4.0",
     "prisma": "^6.5.0",
+    "qrcode": "^1.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sharp": "^0.34.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -64,6 +71,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.0",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",

@@ -20,6 +20,7 @@ export function saveSession(
           new InternalServerErrorException("Не удалось сохранить сессию")
         );
       }
+
       resolve(user);
     });
   });

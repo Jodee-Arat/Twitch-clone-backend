@@ -12,7 +12,7 @@ export async function generateToken(
   if (isUUID) {
     token = uuidv4();
   } else {
-    token = Math.floor(Math.random() * (1000000 - -1) + 1000000).toString();
+    token = Math.floor(Math.random() * (100000 - 1) + 100000).toString();
   }
 
   const expiresIn = new Date(new Date().getTime() + 300000);
