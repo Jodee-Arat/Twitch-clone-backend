@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "ts-node src/core/prisma/prisma.seed.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",
@@ -47,13 +48,16 @@
     "express-session": "^1.18.1",
     "geoip-lite": "^1.4.10",
     "graphql": "^16.10.0",
+    "graphql-subscriptions": "^3.0.0",
     "graphql-upload": "^13.0.0",
     "hi-base32": "^0.5.1",
     "i18n-iso-countries": "^7.14.0",
     "ioredis": "^5.6.0",
+    "livekit-server-sdk": "^1.2.7",
     "otpauth": "^9.4.0",
     "prisma": "^6.5.0",
     "qrcode": "^1.5.4",
+    "raw-body": "^3.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "reflect-metadata": "^0.2.2",

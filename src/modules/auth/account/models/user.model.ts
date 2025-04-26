@@ -1,6 +1,11 @@
 import { type User } from "@/prisma/generated";
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { SocialLinkModel } from "../../profile/models/social-link.model";
+import { StreamModel } from "@/src/modules/stream/models/stream.model";
+import { ChatMessageModel } from "@/src/modules/chat/models/chat-message.model";
+import { FollowModel } from "@/src/modules/follow/models/follow.model";
+import { NotificationSettingsModel } from "@/src/modules/notification/models/notification-settings.model";
+import { NotificationModel } from "@/src/modules/notification/models/notification.model";
 
 @ObjectType()
 export class UserModel implements User {
@@ -25,6 +30,9 @@ export class UserModel implements User {
   @Field(() => String, { nullable: true })
   public bio: string;
 
+  @Field(() => String, { nullable: true })
+  public telegramId: string;
+
   @Field(() => Boolean)
   public isEmailVerified: boolean;
 
@@ -43,8 +51,26 @@ export class UserModel implements User {
   @Field(() => Date, { nullable: true })
   public deactivatedAt: Date;
 
+  @Field(() => StreamModel)
+  streams: StreamModel;
+
+  @Field(() => [NotificationModel])
+  notifications: NotificationModel[];
+
+  @Field(() => NotificationSettingsModel)
+  notificationSettings: NotificationSettingsModel;
+  // возможно будут ошибки связанные с nullable(было до этого тру)
   @Field(() => [SocialLinkModel])
   socialLinks: SocialLinkModel[];
+
+  @Field(() => [FollowModel])
+  followers: FollowModel[];
+
+  @Field(() => [FollowModel])
+  following: FollowModel[];
+
+  @Field(() => [ChatMessageModel])
+  chatMessages: ChatMessageModel[];
 
   @Field(() => Date)
   public createdAt: Date;

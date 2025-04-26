@@ -57,6 +57,11 @@ export class AccountService {
         email,
         password: await hash(password),
         displayName: username,
+        streams: {
+          create: {
+            title: `Стрим ${username}`,
+          },
+        },
       },
     });
 
