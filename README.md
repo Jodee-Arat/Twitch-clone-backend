@@ -1,1 +1,1 @@
-messenger backend (email auth verified + reset password email + add crud profile info, add crud social links, activate and deactivate account, Stream(livekit), webhooks, subs(ws in gql), chat, seeder, follow, channel, notification)
+messenger backend (email auth verified + reset password email + add crud profile info, add crud social links, activate and deactivate account, Stream(livekit), webhooks, subs(ws in gql), chat, seeder, follow, channel, notification, telegram notification)
