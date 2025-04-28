@@ -96,6 +96,30 @@ export class NotificationService {
     return notification;
   }
 
+  async createEnableTwoFactor(userId: string) {
+    const notification = await this.prismaService.notification.create({
+      data: {
+        message: `<b className='font-medium'>Обеспечьте свою безопасность!</b>
+        <p>Вы можете включить двухфакторную аутентификацию для повышения безопасности вашей учетной записи.</p>`,
+        type: NotificationType.ENABLE_TWO_FACTOR,
+        userId,
+      },
+    });
+    return notification;
+  }
+
+  async createVerifyChannel(userId: string) {
+    const notification = await this.prismaService.notification.create({
+      data: {
+        message: `<b className='font-medium'>Поздравляем!</b>
+        <p>Ваш канал был успешно верифицирован. Теперь вы можете использовать все функции платформы.</p>`,
+        type: NotificationType.VERIFIED_CHANNEL,
+        userId,
+      },
+    });
+    return notification;
+  }
+
   async changeSettings(user: User, input: ChangeNotificationSettingsInput) {
     const { telegramNotifications, siteNotifications } = input;
 

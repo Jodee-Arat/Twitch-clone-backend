@@ -186,6 +186,18 @@ export class TelegramService extends Telegraf {
     );
   }
 
+  async sendEnableTwoFactor(chatId: string) {
+    await this.telegram.sendMessage(chatId, MESSAGES.enableTwoFactor, {
+      parse_mode: "HTML",
+    });
+  }
+
+  async sendVerifyChannel(chatId: string) {
+    await this.telegram.sendMessage(chatId, MESSAGES.verifyChannel, {
+      parse_mode: "HTML",
+    });
+  }
+
   private async findUserByChatId(chatId: string) {
     const user = await this.prismaService.user.findUnique({
       where: {
