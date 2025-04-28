@@ -5,7 +5,7 @@ export const StripeOptionsSymbol = Symbol("StripeOptionsSymbol");
 
 export type TypeStripeOptions = {
   apiKey: string;
-  config?: Stripe;
+  config?: Stripe.StripeConfig;
 };
 
 export type TypeStripeAsyncOptions = Pick<ModuleMetadata, "imports"> &

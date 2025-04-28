@@ -3,6 +3,7 @@ import { PrismaService } from "@/src/core/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { ChangeNotificationSettingsInput } from "./inputs/change-notification-settings.input";
 import { generateToken } from "@/src/shared/utils/generate-token.util";
+import { SponsorshipPlan } from "@/generated";
 
 @Injectable()
 export class NotificationService {
@@ -64,6 +65,27 @@ export class NotificationService {
 				<p>Это пользователь <a href='/${follower.username}' className='font-semibold'>${follower.displayName}</a>.</p>
 				`,
         type: NotificationType.NEW_FOLLOWER,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+    return notification;
+  }
+
+  async createNewSponsorship(
+    userId: string,
+    plan: SponsorshipPlan,
+    sponsor: User
+  ) {
+    const notification = await this.prismaService.notification.create({
+      data: {
+        message: `<b className='font-medium'>У вас новый спонсор!</b>
+        <p>Это пользователь <a href='/${sponsor.username}' className='font-semibold'>${sponsor.displayName}</a> стал вашим спонсором, выбрав план <strong>${plan.title}</strong>.</p>
+        `,
+        type: NotificationType.NEW_SPONSORSHIP,
         user: {
           connect: {
             id: userId,

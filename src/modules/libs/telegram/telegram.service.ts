@@ -7,6 +7,7 @@ import { Context, Telegraf } from "telegraf";
 import { MESSAGES } from "./telegram.messages";
 import { BUTTONS } from "./telegram.buttons";
 import { SessionMetadata } from "@/src/shared/types/session-metadata.types";
+import { SponsorshipPlan } from "@/generated";
 
 @Update()
 @Injectable()
@@ -164,6 +165,21 @@ export class TelegramService extends Telegraf {
     await this.telegram.sendMessage(
       chatId,
       MESSAGES.newFollowing(follower, user.following.length),
+      {
+        parse_mode: "HTML",
+      }
+    );
+  }
+
+  async sendNewSponsorship(
+    chatId: string,
+    plan: SponsorshipPlan,
+    sponsor: User
+  ) {
+    const user = await this.findUserByChatId(chatId);
+    await this.telegram.sendMessage(
+      chatId,
+      MESSAGES.newSponsorship(plan, sponsor),
       {
         parse_mode: "HTML",
       }

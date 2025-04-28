@@ -11,12 +11,14 @@ import { TokenType, User } from "@/prisma/generated";
 import { getSessionMetadata } from "@/src/shared/utils/session-metadata.util";
 import { saveSession } from "@/src/shared/utils/session.util";
 import { generateToken } from "@/src/shared/utils/generate-token.util";
+import { TelegramService } from "../../libs/telegram/telegram.service";
 
 @Injectable()
 export class VerificationService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
+    private readonly telegramService: TelegramService
   ) {}
 
   async verify(req: Request, input: VerificationInput, userAgent: string) {
@@ -67,6 +69,8 @@ export class VerificationService {
       user.email,
       verificationToken.token
     );
-    return true;
   }
+  //   await this.telegramService.send
+  //   return true;
+  // }
 }
