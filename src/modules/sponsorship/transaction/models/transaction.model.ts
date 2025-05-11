@@ -20,8 +20,8 @@ export class TransactionModel implements Transaction {
   @Field(() => String)
   public stripeSubscriptionId: string;
 
-  @Field(() => String)
-  public status: TransactionStatus;
+  @Field(() => TransactionStatus)
+  public status: $Enums.TransactionStatus;
 
   @Field(() => String)
   public userId: string;

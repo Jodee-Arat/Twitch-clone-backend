@@ -8,12 +8,11 @@ import { FiltersInput } from "./inputs/filters.input";
 import { User, type Prisma } from "@/prisma/generated";
 import { ChangeStreamInfoInput } from "./inputs/change-stream-info.input";
 import { Upload } from "graphql-upload";
-import sharp from "sharp";
+import * as sharp from "sharp";
 import { StorageService } from "../libs/storage/storage.service";
 import { GenerateStreamTokenInput } from "./inputs/generate-stream-token.input";
 import { ConfigService } from "@nestjs/config";
 import { AccessToken } from "livekit-server-sdk";
-import { identity } from "rxjs";
 @Injectable()
 export class StreamService {
   constructor(
@@ -98,6 +97,14 @@ export class StreamService {
             },
           },
         },
+        {
+          category: {
+            title: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+        },
       ],
     };
   }
@@ -131,14 +138,14 @@ export class StreamService {
 
     const chunks: Buffer[] = [];
 
-    for await (const chunk of file.file.createReadStream()) {
+    for await (const chunk of file.createReadStream()) {
       chunks.push(chunk);
     }
     const buffer = Buffer.concat(chunks);
 
-    const fileName = `/channels/${user.username}.webp`;
+    const fileName = `/streams/${stream.thumbnailUrl}`;
 
-    if (file.file.filename && file.file.filename.endsWith(".gif")) {
+    if (file.filename && file.filename.endsWith(".gif")) {
       const processedBuffer = await sharp(buffer, { animated: true })
         .resize(1280, 720)
         .webp()
@@ -186,8 +193,6 @@ export class StreamService {
         id: userId,
       },
     });
-    const u = await this.prismaService.user.findMany();
-    console.log(userId, u);
 
     if (user) {
       self = {
@@ -201,7 +206,7 @@ export class StreamService {
       };
     }
 
-    const channel = await this.prismaService.stream.findUnique({
+    const channel = await this.prismaService.user.findUnique({
       where: {
         id: channelId,
       },
@@ -214,8 +219,8 @@ export class StreamService {
     const isHost = self.userId === channelId;
 
     const token = new AccessToken(
-      this.configService.getOrThrow<string>("LIVEKIT_API_URL"),
       this.configService.getOrThrow<string>("LIVEKIT_API_KEY"),
+      this.configService.getOrThrow<string>("LIVEKIT_API_SECRET"),
       {
         identity: isHost ? `host-${self.userId}` : self.userId.toString(),
         name: self.username,

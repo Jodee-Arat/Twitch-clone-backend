@@ -10,9 +10,10 @@ import { validateFileFormat, validateFileSize } from "../utils/file.util";
 @Injectable()
 export class FileValidationPipe implements PipeTransform {
   async transform(value: any, metadata: ArgumentMetadata) {
-    if (value.filename) {
+    if (!value.filename) {
       throw new BadRequestException("Файл не загружен!");
     }
+
     const { filename, createReadStream } = value;
     const fileStream = createReadStream() as ReadStream;
 

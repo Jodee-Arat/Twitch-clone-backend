@@ -33,7 +33,7 @@ export function DeactivateTemplate({
             </Heading>
             <Text className="text-base text-black">
               Вы инициировали процесс деактивации вашего аккаунта на платформе{" "}
-              <b>TeaStream</b>.
+              <b>Arat</b>.
             </Text>
           </Section>
           <Section className="bg-gray-100 rounded-lg p-6 text-center mb-6">

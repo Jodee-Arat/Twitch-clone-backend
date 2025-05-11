@@ -47,7 +47,7 @@ export class SessionService {
     }
     userSessions.sort((a, b) => b.createdAt - a.createdAt);
 
-    return userSessions.filter((session) => session.id !== req.session.id);
+    return userSessions.filter(session => session.id !== req.session.id);
   }
 
   async findCurrent(req: Request) {
@@ -66,6 +66,8 @@ export class SessionService {
   }
 
   async login(req: Request, input: LoginInput, userAgent: string) {
+    console.log(input);
+
     const { login, password, pin } = input;
     const user = await this.prismaService.user.findFirst({
       where: {
@@ -73,7 +75,7 @@ export class SessionService {
       },
     });
 
-    if (!user) {
+    if (!user || user.isDeactivated) {
       throw new NotFoundException("Пользователь не найден");
     }
 

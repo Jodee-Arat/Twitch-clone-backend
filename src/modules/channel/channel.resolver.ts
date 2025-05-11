@@ -12,9 +12,9 @@ export class ChannelResolver {
     return this.channelService.findRecommendedChannels();
   }
 
-  @Query(() => UserModel, { name: "findByUsername" })
-  async findByUsername(@Args("username") username: string) {
-    return this.channelService.findByUsername(username);
+  @Query(() => UserModel, { name: "findChannelByUsername" })
+  async findChannelByUsername(@Args("username") username: string) {
+    return this.channelService.findChannelByUsername(username);
   }
 
   @Query(() => Number, { name: "findFollowersCount" })

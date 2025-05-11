@@ -42,10 +42,10 @@ export function VerifyChannelTemplate() {
             <Text className="text-gray-600">
               Если у вас есть вопросы, напишите нам на{" "}
               <Link
-                href="mailto:help@teastreamclone.ru"
+                href="mailto:obgon02@bk.ru"
                 className="text-[#18b9ae] underline"
               >
-                help@teastreamclone.ru
+                obgon02@bk.ru
               </Link>
               .
             </Text>

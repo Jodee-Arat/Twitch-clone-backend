@@ -24,8 +24,8 @@ export function AccountDeletionTemplate() {
               Ваш аккаунт полностью удалён
             </Heading>
             <Text className="text-base text-black">
-              Ваш аккаунт полностью стёрт из базы данных TeaStream. Все ваши
-              данные безвозвратно удалены и не могут быть восстановлены.
+              Ваш аккаунт полностью стёрт из базы данных Arat. Все ваши данные
+              безвозвратно удалены и не могут быть восстановлены.
             </Text>
           </Section>
           <Section className="bg-gray-100 rounded-lg p-6 text-center mb-6">

@@ -20,7 +20,7 @@ export class ProfileResolver {
   @Authorization()
   async changeAvatar(
     @Authorized() user: User,
-    // здесь возможно не работает из-за graphqluploadExpress потому что название не такое как на видео, если работать не будет попробовать сделать как он на 5:28:34 (1видео)
+
     @Args("avatar", { type: () => GraphQLUpload }, FileValidationPipe)
     avatar: Upload
   ) {

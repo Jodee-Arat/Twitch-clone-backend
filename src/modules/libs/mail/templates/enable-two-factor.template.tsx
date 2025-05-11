@@ -57,10 +57,10 @@ export function EnableTwoFactorTemplate({
               Если у вас возникли вопросы, обращайтесь в службу поддержки по
               адресу{" "}
               <Link
-                href="mailto:help@teastream.ru"
+                href="mailto:obgon02@bk.ru"
                 className="text-[#18b9ae] underline"
               >
-                help@teastreamclone.ru
+                obgon02@bk.ru
               </Link>
               .
             </Text>

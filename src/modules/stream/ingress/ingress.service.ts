@@ -18,6 +18,7 @@ export class IngressService {
 
   async create(user: User, ingressType: IngressInput) {
     await this.resetIngresses(user);
+
     const options: CreateIngressOptions = {
       name: user.username,
       roomName: user.id,
@@ -38,25 +39,43 @@ export class IngressService {
       };
     }
 
-    const ingress = await this.liveKitService.ingress.createIngress(
-      ingressType,
-      options
-    );
+    const maxRetries = 3;
+    const baseDelay = 1000; // 1 секунда
+
+    let ingress;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        ingress = await this.liveKitService.ingress.createIngress(
+          ingressType,
+          options
+        );
+        break; // успех — выходим
+      } catch (err) {
+        const status = err?.response?.status || err?.status;
+        if (status === 429 && attempt < maxRetries - 1) {
+          const delay = baseDelay * (attempt + 1);
+          await new Promise(res => setTimeout(res, delay)); // экспоненциальная задержка
+        } else {
+          throw new BadRequestException(
+            "Не удалось создать входной поток: " + err.message
+          );
+        }
+      }
+    }
 
     if (!ingress || !ingress.url || !ingress.streamKey) {
       throw new BadRequestException("Не удалось создать входной поток");
     }
 
     await this.prismaService.stream.update({
-      where: {
-        userId: user.id,
-      },
+      where: { userId: user.id },
       data: {
         ingressId: ingress.ingressId,
         serverUrl: ingress.url,
         streamKey: ingress.streamKey,
       },
     });
+
     return true;
   }
   private async resetIngresses(user: User) {

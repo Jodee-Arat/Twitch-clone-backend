@@ -6,6 +6,8 @@ import { ChatMessageModel } from "@/src/modules/chat/models/chat-message.model";
 import { FollowModel } from "@/src/modules/follow/models/follow.model";
 import { NotificationSettingsModel } from "@/src/modules/notification/models/notification-settings.model";
 import { NotificationModel } from "@/src/modules/notification/models/notification.model";
+import { PlanModel } from "@/src/modules/sponsorship/plan/models/plan.model";
+import { SubscriptionModel } from "@/src/modules/sponsorship/subscription/models/subscription.model";
 
 @ObjectType()
 export class UserModel implements User {
@@ -57,10 +59,9 @@ export class UserModel implements User {
   @Field(() => [NotificationModel])
   notifications: NotificationModel[];
 
-  @Field(() => NotificationSettingsModel)
+  @Field(() => NotificationSettingsModel, { nullable: true })
   notificationSettings: NotificationSettingsModel;
-  // возможно будут ошибки связанные с nullable(было до этого тру)
-  @Field(() => [SocialLinkModel])
+  @Field(() => [SocialLinkModel], { nullable: true })
   socialLinks: SocialLinkModel[];
 
   @Field(() => [FollowModel])
@@ -68,6 +69,12 @@ export class UserModel implements User {
 
   @Field(() => [FollowModel])
   following: FollowModel[];
+
+  @Field(() => [PlanModel])
+  public sponsorshipPlans: PlanModel[];
+
+  @Field(() => [SubscriptionModel])
+  public sponsorshipSubscriptions: SubscriptionModel[];
 
   @Field(() => [ChatMessageModel])
   chatMessages: ChatMessageModel[];

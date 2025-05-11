@@ -32,7 +32,7 @@ export function VerificationTemplate({
               Подтверждение вашей почты
             </Heading>
             <Text className="text-base text-black">
-              Спасибо за регистрацию в TeaStream! Чтобы подтвердить свой адрес
+              Спасибо за регистрацию в Arat! Чтобы подтвердить свой адрес
               электронной почты, пожалуйста, перейдите по следующей ссылке:
             </Text>
             <Link
@@ -47,7 +47,7 @@ export function VerificationTemplate({
               Если у вас есть вопросы или вы столкнулись с трудностями, не
               стесняйтесь обращаться в нашу службу поддержки по адресу{" "}
               <Link
-                href="mailto:dema-61.bizml.ru"
+                href="mailto:obgon02@bk.ru"
                 className="text-[#18b9ae] underline"
               >
                 dema-61.bizml.ru

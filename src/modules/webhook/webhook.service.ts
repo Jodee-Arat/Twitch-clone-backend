@@ -42,7 +42,10 @@ export class WebhookService {
       const followers = await this.prismaService.follow.findMany({
         where: {
           followingId: stream.user.id,
-          follower: { isDeactivated: false },
+          follower: {
+            isDeactivated: false,
+            notificationSettings: { isNot: null },
+          },
         },
         include: {
           follower: {

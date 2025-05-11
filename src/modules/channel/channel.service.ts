@@ -24,7 +24,7 @@ export class ChannelService {
     return channels;
   }
 
-  async findByUsername(username: string) {
+  async findChannelByUsername(username: string) {
     const channel = await this.prismaService.user.findUnique({
       where: {
         isDeactivated: false,
@@ -42,6 +42,8 @@ export class ChannelService {
           },
         },
         following: true,
+        sponsorshipPlans: true,
+        sponsorshipSubscriptions: true,
       },
     });
 

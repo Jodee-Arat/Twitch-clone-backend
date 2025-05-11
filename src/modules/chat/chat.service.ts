@@ -40,9 +40,9 @@ export class ChatService {
       throw new NotFoundException("Стрим не найден");
     }
 
-    // if (!stream.isLive){
-    // 	throw new BadRequestException('Стрим не в эфире')
-    // }
+    if (!stream.isLive) {
+      throw new BadRequestException("Стрим не в эфире");
+    }
     // Я ДУМАЮ ЭТО НЕ ОЧЕНЬ КРУТО, ВЕДЬ НА ТВИЧЕ МОЖНО ВСЕГДА БЫТЬ В ЧАТЕ
 
     const message = await this.prismaService.chatMessage.create({

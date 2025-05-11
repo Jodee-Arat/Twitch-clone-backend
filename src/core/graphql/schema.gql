@@ -224,8 +224,8 @@ type Query {
   findAllCategories: [CategoryModel!]!
   findAllStreams(filters: FiltersInput!): [StreamModel!]!
   findByUserNotifications: [NotificationModel!]!
-  findByUsername(username: String!): UserModel!
   findCategoryBySlug(slug: String!): CategoryModel!
+  findChannelByUsername(username: String!): UserModel!
   findChatMessagesByStream(streamId: String!): [ChatMessageModel!]!
   findCurrentSession: SessionModel!
   findFollowersCount(channelId: String!): Float!
@@ -288,7 +288,7 @@ input SocialLinkOrderInput {
 }
 
 type StreamModel {
-  category: CategoryModel!
+  category: CategoryModel
   categoryId: String!
   chatMessages: [ChatMessageModel!]!
   createdAt: DateTime!
@@ -334,11 +334,18 @@ type TransactionModel {
   createdAt: DateTime!
   currency: String!
   id: ID!
-  status: String!
+  status: TransactionStatus!
   stripeSubscriptionId: String!
   updatedAt: DateTime!
   user: UserModel!
   userId: String!
+}
+
+enum TransactionStatus {
+  EXPIRED
+  FAILED
+  PENDING
+  SUCCESS
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -359,10 +366,12 @@ type UserModel {
   isEmailVerified: Boolean!
   isTotpEnabled: Boolean!
   isVerified: Boolean!
-  notificationSettings: NotificationSettingsModel!
+  notificationSettings: NotificationSettingsModel
   notifications: [NotificationModel!]!
   password: String!
-  socialLinks: [SocialLinkModel!]!
+  socialLinks: [SocialLinkModel!]
+  sponsorshipPlans: [PlanModel!]!
+  sponsorshipSubscriptions: [SubscriptionModel!]!
   streams: StreamModel!
   telegramId: String
   totpSecret: String

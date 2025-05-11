@@ -23,6 +23,10 @@ export class AccountService {
       where: { id },
       include: {
         socialLinks: true,
+        notificationSettings: true,
+        streams: true,
+        sponsorshipPlans: true,
+        sponsorshipSubscriptions: true,
       },
     });
 
@@ -60,6 +64,12 @@ export class AccountService {
         streams: {
           create: {
             title: `Стрим ${username}`,
+          },
+        },
+        notificationSettings: {
+          create: {
+            siteNotifications: true,
+            telegramNotifications: false,
           },
         },
       },

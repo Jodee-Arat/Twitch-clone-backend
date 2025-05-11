@@ -39,7 +39,7 @@ export class StreamResolver {
     @Args("thumbnail", { type: () => GraphQLUpload }, FileValidationPipe)
     thumbnail: Upload
   ) {
-    return this.streamService.changeInfo(user, thumbnail);
+    return this.streamService.changeThumbnail(user, thumbnail);
   }
 
   @Authorization()

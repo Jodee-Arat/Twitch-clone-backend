@@ -3,13 +3,13 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import { StorageService } from "../../libs/storage/storage.service";
 import { User } from "@/prisma/generated";
 import { Upload } from "graphql-upload";
-import sharp from "sharp";
+import * as sharp from "sharp";
+
 import { ChangeProfileInfoInput } from "./inputs/change-profile-info.input";
 import {
   SocialLinkInput,
   SocialLinkOrderInput,
 } from "./inputs/social-link.input";
-import { connect } from "http2";
 
 @Injectable()
 export class ProfileService {
@@ -25,14 +25,14 @@ export class ProfileService {
 
     const chunks: Buffer[] = [];
 
-    for await (const chunk of file.file.createReadStream()) {
+    for await (const chunk of file.createReadStream()) {
       chunks.push(chunk);
     }
     const buffer = Buffer.concat(chunks);
 
     const fileName = `/channels/${user.username}.webp`;
 
-    if (file.file.filename && file.file.filename.endsWith(".gif")) {
+    if (file.filename && file.filename.endsWith(".gif")) {
       const processedBuffer = await sharp(buffer, { animated: true })
         .resize(512, 512)
         .webp()
@@ -124,7 +124,7 @@ export class ProfileService {
       return;
     }
 
-    const updatePromises = list.map((socialLink) => {
+    const updatePromises = list.map(socialLink => {
       return this.prismaService.socialLink.update({
         where: { id: socialLink.id },
         data: { position: socialLink.position },
